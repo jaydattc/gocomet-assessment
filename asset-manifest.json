@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/gocomet-assessment/static/css/main.d17ae358.chunk.css",
-    "main.js": "/gocomet-assessment/static/js/main.a09b6095.chunk.js",
-    "main.js.map": "/gocomet-assessment/static/js/main.a09b6095.chunk.js.map",
+    "main.js": "/gocomet-assessment/static/js/main.c6faef7d.chunk.js",
+    "main.js.map": "/gocomet-assessment/static/js/main.c6faef7d.chunk.js.map",
     "runtime-main.js": "/gocomet-assessment/static/js/runtime-main.d54ad969.js",
     "runtime-main.js.map": "/gocomet-assessment/static/js/runtime-main.d54ad969.js.map",
     "static/js/2.431a7ed2.chunk.js": "/gocomet-assessment/static/js/2.431a7ed2.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.d54ad969.js",
     "static/js/2.431a7ed2.chunk.js",
     "static/css/main.d17ae358.chunk.css",
-    "static/js/main.a09b6095.chunk.js"
+    "static/js/main.c6faef7d.chunk.js"
   ]
 }
