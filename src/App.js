@@ -6,6 +6,7 @@ import Header from "components/Header/";
 import Products from "pages/Products/";
 import Product from "pages/Product/";
 import { FilterProvider } from "hooks/useFilters";
+import { SortProvider } from "hooks/useSort";
 
 function App() {
   return (
@@ -14,9 +15,7 @@ function App() {
       <main className="mt-20">
         <Switch>
           <Route path="/" exact>
-            <FilterProvider>
-              <Products />
-            </FilterProvider>
+            <Products />
           </Route>
           <Route path="/:id" component={Product} />
         </Switch>
@@ -25,4 +24,8 @@ function App() {
   );
 }
 
-export default App;
+export default (
+  <FilterProvider>
+    <SortProvider>App </SortProvider>
+  </FilterProvider>
+);

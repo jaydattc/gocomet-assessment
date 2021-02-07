@@ -20,21 +20,25 @@ export const useFilters = () => useContext(filtersContext);
  */
 export const useFiltersActions = () => useContext(filtersActionsContext);
 
+const initialFilters = {
+  gender: null,
+  categories: [],
+  price_range: [],
+};
+
 export const FilterProvider = ({ children }) => {
   const [filterData, setFilterData] = useState({
     gender: [],
     categories: [],
     price_range: [],
   });
-  const [appliedFilters, _setAppliedFilters] = useState({
-    gender: null,
-    categories: [],
-    price_range: [],
-  });
+  const [appliedFilters, _setAppliedFilters] = useState(initialFilters);
+
+  const clearFilters = () => setAppliedFilters(initialFilters);
   const setAppliedFilters = (value) =>
     _setAppliedFilters({ ...appliedFilters, ...value });
   return (
-    <ActionsProvider value={{ setFilterData, setAppliedFilters }}>
+    <ActionsProvider value={{ setFilterData, setAppliedFilters, clearFilters }}>
       <Provider value={{ appliedFilters, filterData }}>{children}</Provider>
     </ActionsProvider>
   );

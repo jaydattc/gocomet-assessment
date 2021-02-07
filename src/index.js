@@ -4,11 +4,17 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { CartProvider } from "hooks/useCart";
+import { ChakraProvider } from "@chakra-ui/react";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <App />
+      <ChakraProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </ChakraProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById("root"),

@@ -1,5 +1,8 @@
+import { Select } from "@chakra-ui/react";
+import ProductItem from "components/ProductItem/ProductItem";
 import { useFilters, useFiltersActions } from "hooks/useFilters";
-import { useEffect, useState } from "react";
+import { useSort, useSortActions } from "hooks/useSort";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchProductsAndFilters } from "utils/fetchAPIData";
 
@@ -22,10 +25,13 @@ const Checkbox = ({ id, label, ...rest }) => (
 );
 
 function Products() {
-  const [isFetching, setIsFetching] = useState(true);
-  const [products, setProducts] = useState([]);
   const { setFilterData, setAppliedFilters } = useFiltersActions();
   const { filterData, appliedFilters } = useFilters();
+  const { appliedSort, sortValues } = useSort();
+  const { setAppliedSort } = useSortActions();
+  const [isFetching, setIsFetching] = useState(true);
+  const [products, setProducts] = useState([]);
+
   useEffect(() => {
     setIsFetching(true);
     fetchProductsAndFilters().then(([products, filter_data]) => {
@@ -34,6 +40,49 @@ function Products() {
       setIsFetching(false);
     });
   }, []);
+  const filterProductsFn = useMemo(() => {
+    let filterFnArray = [];
+    const appliedPriceFilter = appliedFilters.price_range.map((id) =>
+      filterData.price_range.find((priceFilter) => priceFilter.id === id),
+    );
+    if (appliedPriceFilter?.length > 0)
+      filterFnArray = [
+        ...filterFnArray,
+        ...appliedPriceFilter.map((priceLimits) => (product) =>
+          product.discountedPrice <= parseInt(priceLimits.end) &&
+          product.discountedPrice >= parseInt(priceLimits.start),
+        ),
+      ];
+    return (product) =>
+      filterFnArray.length > 0
+        ? filterFnArray.reduce((acc, fn) => fn(product) || acc, false)
+        : true;
+  }, [appliedFilters.price_range, filterData.price_range]);
+
+  const filteredProducts = useMemo(
+    () => products.filter((product) => filterProductsFn(product)),
+    [products, filterProductsFn],
+  );
+
+  const sortedProducts = useMemo(() => {
+    if (!appliedSort) return filteredProducts;
+    const currentSort = sortValues.find(
+      (sortParam) => sortParam.option === appliedSort,
+    );
+    if (currentSort?.method) return filteredProducts.sort(currentSort.method);
+    return filteredProducts;
+  }, [filteredProducts, appliedSort, sortValues]);
+
+  // const searchResults = useMemo(() => {
+  //   const filtered = sortedProducts.filter((entry) =>
+  //     Object.values(entry).some(
+  //       (val) =>
+  //         typeof val === "string" &&
+  //         val.toLowerCase().search(searchPhrase.toLowerCase()),
+  //     ),
+  //   );
+  // }, [sortedProducts, searchPhrase]);
+
   return (
     <div>
       <div className="mx-5 mt-5 text-sm leading-8">
@@ -47,7 +96,7 @@ function Products() {
         </div>
       </div>
       <div className="flex pt-3">
-        <div className="filters flex flex-col w-1/4">
+        <div className="filters sticky top-24 self-start flex flex-col w-1/4">
           <span className="font-semibold pl-5 flex items-center text-md w-full h-12 border-b border-gray-300">
             FILTERS
           </span>
@@ -71,10 +120,7 @@ function Products() {
                 label={
                   <>
                     {category.id}
-                    <span className="font-mono text-xs">
-                      {" "}
-                      ({category.count})
-                    </span>
+                    <span className="font-mono text-xs"> {category.count}</span>
                   </>
                 }
                 id={`filter-category-${category.id}`}
@@ -133,7 +179,31 @@ function Products() {
           </FilterContainer>
         </div>
         <div className="products flex flex-col w-full">
-          <div className="products-sort-container w-full h-12 p-2 border-b border-gray-300"></div>
+          <div className="products-sort-container  w-full h-12 p-2 border-b border-gray-300 flex flex-row-reverse">
+            <Select
+              size="sm"
+              value={appliedSort}
+              onChange={(e) => setAppliedSort(e.target.value)}
+              w="14rem"
+              placeholder="Sort by"
+            >
+              {sortValues.map((sortParam) => (
+                <option value={sortParam.option} key={sortParam.option}>
+                  Sort by: {sortParam.title}
+                </option>
+              ))}
+            </Select>
+          </div>
+          <ul className="py-8 px-6 flex flex-wrap">
+            {sortedProducts.map((product) => (
+              <ProductItem product={product} />
+            ))}
+            {!sortedProducts.length && (
+              <span className="w-full text-center mt-6">
+                No Products found!
+              </span>
+            )}
+          </ul>
         </div>
       </div>
     </div>
