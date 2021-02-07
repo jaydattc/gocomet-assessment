@@ -1,10 +1,10 @@
 import { Select } from "@chakra-ui/react";
 import ProductItem from "components/ProductItem/ProductItem";
-import { useFilters, useFiltersActions } from "hooks/useFilters";
-import { useSort, useSortActions } from "hooks/useSort";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchProductsAndFilters } from "utils/fetchAPIData";
+import { useFilters, useFiltersActions } from "hooks/useFilters";
+import { useSort, useSortActions } from "hooks/useSort";
 
 const FilterContainer = ({ children }) => (
   <div className="flex flex-col text-sm pl-5 py-3 border-b border-r border-gray-300">
@@ -87,7 +87,7 @@ function Products() {
     <div>
       <div className="mx-5 mt-5 text-sm leading-8">
         <div>
-          <Link to="/"> Home /</Link>
+          <Link to="/gocomet-assessment"> Home /</Link>
           <span className="font-semibold">Shirts for Men & Women</span>
         </div>
         <div>

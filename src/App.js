@@ -10,22 +10,22 @@ import { SortProvider } from "hooks/useSort";
 
 function App() {
   return (
-    <div className="App min-h-screen flex-col">
-      <Header />
-      <main className="mt-20">
-        <Switch>
-          <Route path="/" exact>
-            <Products />
-          </Route>
-          <Route path="/:id" component={Product} />
-        </Switch>
-      </main>
-    </div>
+    <FilterProvider>
+      <SortProvider>
+        <div className="App min-h-screen flex-col">
+          <Header />
+          <main className="mt-20">
+            <Switch>
+              <Route path="/gocomet-assessment" exact>
+                <Products />
+              </Route>
+              <Route path="/gocomet-assessment/:id" component={Product} />
+            </Switch>
+          </main>
+        </div>
+      </SortProvider>
+    </FilterProvider>
   );
 }
 
-export default (
-  <FilterProvider>
-    <SortProvider>App </SortProvider>
-  </FilterProvider>
-);
+export default App;
