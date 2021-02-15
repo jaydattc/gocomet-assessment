@@ -1,7 +1,7 @@
 # Assessment Test for [GoComet](https://www.gocomet.com/)
 
 ~~This project's built version can be viewed at [https://jaydattc.github.io/gocomet-assessment/](https://jaydattc.github.io/gocomet-assessment/)~~
-It might not work properly because of Myntra CDN's 3rd party policy 
+It might not work properly because of lack of CSP
 
 ## What works?
 - Sorting, Filtering (only price because of inavaibility of listing metadata)
